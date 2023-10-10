@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -11,7 +10,6 @@ public class Rechenarten : MonoBehaviour
     private int number1;
     private int number2;
     private int correctAnswer;
-    private int roundsPlayed = 0;
 
     private void Start()
     {
@@ -35,58 +33,44 @@ public class Rechenarten : MonoBehaviour
             if (playerAnswer == correctAnswer)
             {
                 resultText.text = "Richtig!";
+                resultText.color = Color.green;
 
             }
             else
             {
                 resultText.text = "Falsch!";
+                resultText.color = Color.red;
                 rightAnswerText.text = "Die richtige Antwort ist " + correctAnswer;
             }
-
-
-            StartCoroutine(GenerateNextEquationAfterDelay());
         }
     }
 
-    private IEnumerator GenerateNextEquationAfterDelay()
+    public void GenerateRandomEquation()
     {
-        yield return new WaitForSeconds(2f);
-        roundsPlayed++;
+        number1 = Random.Range(1, 101);
+        number2 = Random.Range(1, Mathf.Max(101 - number1, 2));
 
-        if (roundsPlayed >= 20)
-        {
-            EndGame();
-        }
-        else
-        {
-            GenerateRandomEquation();
-        }
-    }
+        int rand = Random.Range(0, 3);
 
-    private void GenerateRandomEquation()
-    {
-        number1 = UnityEngine.Random.Range(1, 101);
-        number2 = UnityEngine.Random.Range(1, Mathf.Max(101 - number1, 2));
-
-        if (UnityEngine.Random.Range(0, 2) == 0)
+        if (rand == 0)
         {
             correctAnswer = number1 + number2;
             equationText.text = number1 + " + " + number2 + " = ";
         }
-        else
+        else if(rand == 1)
         {
             correctAnswer = number1 - number2;
             equationText.text = number1 + " - " + number2 + " = ";
+        }
+        else
+        {
+            correctAnswer = number1 * number2;
+            equationText.text = number1 + " * " + number2 + " = ";
         }
 
         answerInput.text = "";
         resultText.text = "";
         rightAnswerText.text = "";
-    }
-
-    private void EndGame()
-    {
-        resultText.text = "Geschafft!";
     }
 
 }

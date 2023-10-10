@@ -12,7 +12,6 @@ public class Zahlenarten : MonoBehaviour
     public Button nextButton;
     private float currentNumber;
     private NumberType correctType;
-    private int rounds;
     private bool selectionMade = false;
 
     enum NumberType
@@ -26,7 +25,6 @@ public class Zahlenarten : MonoBehaviour
     {
         nextButton.onClick.AddListener(NextButtonClick);
         GenerateRandomNumber();
-        rounds = 0;
     }
 
     private void GenerateRandomNumber()
@@ -53,7 +51,6 @@ public class Zahlenarten : MonoBehaviour
         wholeNumberToggle.isOn = false;
         rationalNumberToggle.isOn = false;
         selectionMade = false;
-        nextButton.interactable = false;
     }
 
     public void HandleToggleChange()
@@ -90,16 +87,7 @@ public class Zahlenarten : MonoBehaviour
                 numberText.text = "Falsch!";
             }
 
-            rounds++;
-
-            if (rounds == 20)
-            {
-                EndGame();
-            }
-            else
-            {
-                StartCoroutine(GenerateNextNumberAfterDelay());
-            }
+            StartCoroutine(GenerateNextNumberAfterDelay());
         }
     }
 
@@ -107,16 +95,6 @@ public class Zahlenarten : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         GenerateRandomNumber();
-    }
-
-    private void EndGame()
-    {
-        StopAllCoroutines();
-        numberText.text = "Spiel beendet!";
-        naturalNumberToggle.interactable = false;
-        wholeNumberToggle.interactable = false;
-        rationalNumberToggle.interactable = false;
-        nextButton.interactable = false;
     }
 
 }

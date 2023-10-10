@@ -1,16 +1,18 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Primzahlen : MonoBehaviour
 {
     public TextMeshProUGUI numberText;
+    public TMP_InputField numberInputText;
+    public TextMeshProUGUI feedbackText;
+    public int numberInput;
     public Button yesButton;
     public Button noButton;
     private int randomNumber;
     private bool isPrime;
-    private int rounds = 0;
 
     private void Start()
     {
@@ -18,36 +20,60 @@ public class Primzahlen : MonoBehaviour
         noButton.onClick.AddListener(CheckIsNotPrime);
 
         GenerateRandomNumber();
+        feedbackText.text = "Schreib eine Nummer rein";
     }
 
-    private void GenerateRandomNumber()
+    private void Update()
     {
-        if (rounds < 20)
+        if (Input.GetButtonDown("Submit") && numberInputText.text != "")
         {
-            rounds++;
-            randomNumber = Random.Range(1, 101);
-            isPrime = IsPrime(randomNumber);
+            try
+            {
+                CheckInputNumber();
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+            }
+        }
+    }
+    public void CheckInputNumber()
+    {
+        numberInput = int.Parse(numberInputText.text);
+        isPrime = IsPrime(numberInput);
 
-            numberText.text = "Ist " + randomNumber + " eine Primzahl?";
+        if (isPrime)
+        {
+            feedbackText.text = "Ist eine Primzahl";
+            feedbackText.color = Color.green;
         }
         else
         {
-            EndGame();
+            feedbackText.text = "Ist keine Primzahl";
+            feedbackText.color = Color.red;
         }
     }
+    public void GenerateRandomNumber()
+    {
+        numberText.color = Color.white;
+        randomNumber = UnityEngine.Random.Range(1, 101);
+        isPrime = IsPrime(randomNumber);
 
-    private void CheckIsPrime()
+        numberText.text = "Ist " + randomNumber + " eine Primzahl?";
+    }
+
+    public void CheckIsPrime()
     {
         if (isPrime)
         {
             numberText.text = "Richtig! " + randomNumber + " ist eine Primzahl.";
+            numberText.color = Color.green;
         }
-        else
+        else if (!isPrime)
         {
             numberText.text = "Falsch! " + randomNumber + " ist keine Primzahl.";
+            numberText.color = Color.red;
         }
-
-        StartCoroutine(ShowNextNumberAfterDelay(3f));
     }
 
     private void CheckIsNotPrime()
@@ -55,18 +81,13 @@ public class Primzahlen : MonoBehaviour
         if (!isPrime)
         {
             numberText.text = "Richtig! " + randomNumber + " ist keine Primzahl.";
+            numberText.color = Color.green;
         }
         else
         {
             numberText.text = "Falsch! " + randomNumber + " ist eine Primzahl.";
+            numberText.color = Color.red;
         }
-
-        StartCoroutine(ShowNextNumberAfterDelay(3f));
-    }
-
-    private void EndGame()
-    {
-        numberText.text = "Geschafft!";
     }
 
     private bool IsPrime(int number)
@@ -85,11 +106,5 @@ public class Primzahlen : MonoBehaviour
         }
 
         return true;
-    }
-
-    private IEnumerator ShowNextNumberAfterDelay(float delayInSeconds)
-    {
-        yield return new WaitForSeconds(delayInSeconds);
-        GenerateRandomNumber();
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -6,64 +5,31 @@ public class Teilbarkeit : MonoBehaviour
 {
     public TextMeshProUGUI numberText;
     private int numberToCheck;
-    private int roundsPlayed = 0;
 
-    private void Start()
+    void Start()
     {
         GenerateRandomNumber();
     }
 
-    private void GenerateRandomNumber()
+    public void GenerateRandomNumber()
     {
-        if (roundsPlayed >= 20)
-        {
-            EndGame();
-            return;
-        }
-
         numberToCheck = Random.Range(1, 101);
         numberText.text = "Durch welche Zahl ist " + numberToCheck + " teilbar?";
+        numberText.color = Color.black;
     }
 
     public void CheckDivisibility(int divisor)
     {
-        if (roundsPlayed >= 20)
-        {
-            return;
-        }
 
         if (numberToCheck % divisor == 0)
         {
             numberText.text = "Richtig! " + numberToCheck + " ist durch " + divisor + " teilbar.";
+            numberText.color = Color.green;
         }
         else
         {
             numberText.text = "Falsch! " + numberToCheck + " ist nicht durch " + divisor + " teilbar.";
-        }
-
-        roundsPlayed++;
-
-        if (roundsPlayed >= 20)
-        {
-            EndGame();
-        }
-        else
-        {
-            StartCoroutine(GenerateNextNumberAfterDelay());
+            numberText.color = Color.red;
         }
     }
-
-    private IEnumerator GenerateNextNumberAfterDelay()
-    {
-        yield return new WaitForSeconds(2f);
-        GenerateRandomNumber();
-    }
-
-    private void EndGame()
-    {
-        numberText.text = "Geschafft!";
-
-    }
-
-
 }

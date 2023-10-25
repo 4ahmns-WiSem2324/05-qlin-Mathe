@@ -86,7 +86,7 @@ public class DeleteablePrime : MonoBehaviour
             }
         }
 
-        feedbackText.text = "Es gab " + primeNumCounter + " Primzahlen";
+        feedbackText.text = "Es gab " + primeNumCounter + " Primzahle/n";
         feedbackText.color = Color.black;
         primeNumCounter = 0;
     }

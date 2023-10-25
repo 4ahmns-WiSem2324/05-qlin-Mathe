@@ -14,6 +14,10 @@ public class Primzahlen : MonoBehaviour
     private int randomNumber;
     private bool isPrime;
 
+    public AudioClip rightClip;
+    public AudioClip wrongClip;
+    public AudioSource audioSource;
+
     private void Start()
     {
         yesButton.onClick.AddListener(CheckIsPrime);
@@ -67,11 +71,13 @@ public class Primzahlen : MonoBehaviour
         if (isPrime)
         {
             numberText.text = "Richtig! " + randomNumber + " ist eine Primzahl.";
+            audioSource.PlayOneShot(rightClip);
             numberText.color = Color.green;
         }
         else if (!isPrime)
         {
             numberText.text = "Falsch! " + randomNumber + " ist keine Primzahl.";
+            audioSource.PlayOneShot(wrongClip);
             numberText.color = Color.red;
         }
     }
@@ -81,11 +87,13 @@ public class Primzahlen : MonoBehaviour
         if (!isPrime)
         {
             numberText.text = "Richtig! " + randomNumber + " ist keine Primzahl.";
+            audioSource.PlayOneShot(rightClip);
             numberText.color = Color.green;
         }
         else
         {
             numberText.text = "Falsch! " + randomNumber + " ist eine Primzahl.";
+            audioSource.PlayOneShot(wrongClip);
             numberText.color = Color.red;
         }
     }

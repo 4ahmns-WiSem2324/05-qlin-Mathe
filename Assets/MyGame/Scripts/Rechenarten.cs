@@ -9,7 +9,11 @@ public class Rechenarten : MonoBehaviour
     public TextMeshProUGUI resultText;
     private int number1;
     private int number2;
-    private int correctAnswer;
+    private float correctAnswer;
+
+    public AudioClip rightClip;
+    public AudioClip wrongClip;
+    public AudioSource audioSource;
 
     private void Start()
     {
@@ -34,6 +38,7 @@ public class Rechenarten : MonoBehaviour
             {
                 resultText.text = "Richtig!";
                 resultText.color = Color.green;
+                audioSource.PlayOneShot(rightClip);
 
             }
             else
@@ -41,6 +46,7 @@ public class Rechenarten : MonoBehaviour
                 resultText.text = "Falsch!";
                 resultText.color = Color.red;
                 rightAnswerText.text = "Die richtige Antwort ist " + correctAnswer;
+                audioSource.PlayOneShot(wrongClip);
             }
         }
     }
@@ -50,7 +56,7 @@ public class Rechenarten : MonoBehaviour
         number1 = Random.Range(1, 101);
         number2 = Random.Range(1, Mathf.Max(101 - number1, 2));
 
-        int rand = Random.Range(0, 3);
+        int rand = Random.Range(0, 4);
 
         if (rand == 0)
         {
@@ -62,10 +68,15 @@ public class Rechenarten : MonoBehaviour
             correctAnswer = number1 - number2;
             equationText.text = number1 + " - " + number2 + " = ";
         }
-        else
+        else if(rand == 2)
         {
             correctAnswer = number1 * number2;
             equationText.text = number1 + " * " + number2 + " = ";
+        }
+        else
+        {
+            correctAnswer = number1 / number2;
+            equationText.text = number1 + " / " + number2 + " = ";
         }
 
         answerInput.text = "";
